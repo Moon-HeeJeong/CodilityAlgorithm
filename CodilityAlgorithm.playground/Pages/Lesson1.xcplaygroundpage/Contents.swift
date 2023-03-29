@@ -19,33 +19,30 @@
  N is an integer within the range [1..2,147,483,647].
  Copyright 2009–2023 by Codility Limited. All Rights Reserved. Unauthorized copying, publication or disclosure prohibited.
  
- public func solution(_ N : Int) -> Int {
- }
  **/
 
 import Foundation
 
-var N = 529
-
 //🌱solutionA (20%....)
-
-let binaryValue = String(N, radix: 2)
-var binaryGapLength: Int = 0
-
-let oneOffset = binaryValue.enumerated().filter({$0.element == "1"}).map({$0.offset})
-
-//guard oneOffset.count >= 2 else{
-//    return binaryGapLength
-//}
-
-//        print("\(N) one offset \(oneOffset)")
-
-for i in 0..<oneOffset.count-2{
-    let gap  = oneOffset[i+1] - oneOffset[i] - 1
+public func solution(_ N : Int) -> Int {
+    let binaryValue = String(N, radix: 2)
+    var binaryGapLength: Int = 0
     
-    binaryGapLength = max(gap, binaryGapLength)
+    let oneOffset = binaryValue.enumerated().filter({$0.element == "1"}).map({$0.offset})
+    
+    guard oneOffset.count >= 2 else{
+        return binaryGapLength
+    }
+    
+//    print("\(N) one offset \(oneOffset)")
+    
+    for i in 0..<oneOffset.count-2{
+        let gap  = oneOffset[i+1] - oneOffset[i] - 1
+        
+        binaryGapLength = max(gap, binaryGapLength)
+    }
+    return binaryGapLength
 }
-print("\(binaryGapLength)")
 
-
+print(solution(529))
 

@@ -39,9 +39,6 @@
  In your solution, focus on correctness. The performance of your solution will not be the focus of the assessment.
  Copyright 2009–2023 by Codility Limited. All Rights Reserved. Unauthorized copying, publication or disclosure prohibited.
  
- public func solutionA(_ A : inout [Int], _ K : Int) -> [Int] {
- // Implement your solution here
- }
  **/
 
 import Foundation
@@ -52,40 +49,46 @@ var K = 20
 
 //🌱solutionA (100%)
 //for 문이 많아서 solutionB로 다시 작성
-
-var tempArrayA: [Int] = []
-
-for _ in 0..<A.count{
-    tempArrayA.append(0)
-}
-for k in 0..<K{
-    for i in 0..<A.count{
-        if i < A.count-1{
-            tempArrayA[i+1] = A[i]
-        }else{
-            tempArrayA[0] = A[i]
-        }
-    }
+public func solutionA(_ A : inout [Int], _ K : Int) -> [Int] {
+    var tempArrayA: [Int] = []
     
-    print("\(k)번째 shift ::\(tempArrayA)")
-    A = tempArrayA
+    for _ in 0..<A.count{
+        tempArrayA.append(0)
+    }
+    for k in 0..<K{
+        for i in 0..<A.count{
+            if i < A.count-1{
+                tempArrayA[i+1] = A[i]
+            }else{
+                tempArrayA[0] = A[i]
+            }
+        }
+        
+        print("\(k)번째 shift ::\(tempArrayA)")
+        A = tempArrayA
+    }
+    return A
 }
+print(solutionA(&A, 4))
 
 
 //🌱solutionB  (100%)
 //toTempInx - A.count 했다가 K가 A.count의 2배 이상인 값이 들어올 때 에러가 나서 %로 처리
-var tempArrayB = Array<Int>(repeating: 0, count: A.count)
-
-for i in 0..<A.count{
-    let toTempInx = i+K
+public func solutionB(_ A : inout [Int], _ K : Int) -> [Int] {
+    var tempArrayB = Array<Int>(repeating: 0, count: A.count)
     
-    if toTempInx <= A.count-1{
-        tempArrayB[toTempInx] = A[i]
-    }else{
-        tempArrayB[toTempInx%A.count] = A[i]
+    for i in 0..<A.count{
+        let toTempInx = i+K
+        
+        if toTempInx <= A.count-1{
+            tempArrayB[toTempInx] = A[i]
+        }else{
+            tempArrayB[toTempInx%A.count] = A[i]
+        }
+        
+        print("\(tempArrayB)")
     }
+    return A
 }
-    
 
-
-
+print(solutionB(&A, 20))
