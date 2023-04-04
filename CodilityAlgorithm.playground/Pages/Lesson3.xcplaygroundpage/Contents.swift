@@ -52,6 +52,7 @@ print(solutionA(10, 100000, 10))
 
 
 //: 🌱solutionB  (100%)
+//강제 형변환은 별로 좋은 코드는 아니니까 %를 사용해서 하면 더 좋을듯
 public func solutionB(_ X : Int, _ Y : Int, _ D : Int) -> Int {
     let currentPos:Double = Double(X)
     let destinationPos:Double = Double(Y)
@@ -66,3 +67,85 @@ public func solutionB(_ X : Int, _ Y : Int, _ D : Int) -> Int {
 
 print(solutionB(10, 85, 30))
 print(solutionB(10, 100000, 10))
+
+//:> ## PermMissingElem ##
+//:>
+//:> An array A consisting of N different integers is given. The array contains integers in the range [1..(N + 1)], which means that exactly one element is missing.
+/*:>
+Your goal is to find that missing element.
+ Write a function:
+
+ public func solution(_ A : inout [Int]) -> Int
+
+ that, given an array A, returns the value of the missing element.
+ For example, given array A such that:
+
+   A[0] = 2
+ 
+   A[1] = 3
+ 
+   A[2] = 1
+ 
+   A[3] = 5
+ 
+ the function should return 4, as it is the missing element.
+ 
+ Write an efficient algorithm for the following assumptions:
+
+ N is an integer within the range [0..100,000];
+ 
+ the elements of A are all distinct;
+ 
+ each element of array A is an integer within the range [1..(N + 1)].
+ */
+
+var cArray = [2,3,1,5]
+
+//: 🌱solutionC (30%)
+// 이중 for문 ㅎㅎ
+public func solutionC(_ A : inout [Int]) -> Int{
+    
+    var missingValue: Int = 0
+    for i in 0..<A.count{
+        
+        if A.filter({$0 == i+1}).count == 0{
+            missingValue = i+1
+        }
+    }
+    return missingValue
+    
+}
+
+print(solutionC(&cArray))
+
+//: 🌱solutionD (100%)
+// 빠져있는 값까지 모두 더한 뒤, 입력받은 값에서 뺴주면 빠진 값이 얼만지 알 수 있다(등차수열)
+public func solutionD(_ A : inout [Int]) -> Int{
+    
+    let arrayCount = A.count+1
+    let sum = (arrayCount * (arrayCount+1))/2
+    let inputArraySum = A.reduce(0, +)
+    
+    let missingValue = sum - inputArraySum
+    
+    return missingValue
+}
+print(solutionD(&cArray))
+
+//: 🌱solutionE (100%)
+//해쉬맵으로 서치
+public func solutionE(_ A : inout [Int]) -> Int{
+    
+    var tempArray:[Int:Bool] = [:]
+    
+    for i in 0..<A.count+1{
+        tempArray[i+1] = false
+    }
+    
+    for i in 0..<A.count{
+        tempArray.removeValue(forKey: A[i])
+    }
+    return tempArray.first?.key ?? 0
+}
+
+print(solutionE(&cArray))
