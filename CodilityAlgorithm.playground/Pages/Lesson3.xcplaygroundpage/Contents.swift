@@ -223,7 +223,7 @@ public func solutionA(_ A : inout [Int]) -> Int{
 //var array = [5,6,2,4,1]//[13,21,27,29,34,36]//[3,1,2,4,3]
 //print(solutionA(&array))
 
-//: 🌱solutionA (100%)
+//: 🌱solutionB (100%)
 //왼쪽 오른쪽 값을 나눠서 계산
 public func solutionB(_ A : inout [Int]) -> Int{
     

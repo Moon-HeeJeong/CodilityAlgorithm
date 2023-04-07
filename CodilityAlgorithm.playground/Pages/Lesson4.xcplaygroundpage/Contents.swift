@@ -2,8 +2,6 @@
 //:> ## FrogRiverOne ##
 //:>
 //:> A small frog wants to get to the other side of a river. The frog is initially located on one bank of the river (position 0) and wants to get to the opposite bank (position X+1). Leaves fall from a tree onto the surface of the river.
-
-
 /*:>
  You are given an array A consisting of N integers representing the falling leaves. A[K] represents the position where one leaf falls at time K, measured in seconds.
 
@@ -144,3 +142,79 @@ public func solutionD(_ X : Int, _ A : inout [Int]) -> Int{
     return destinationPos
 }
 
+
+//:> ## PermCheck ##
+//:>
+//:> A non-empty array A consisting of N integers is given. A permutation is a sequence containing each element from 1 to N once, and only once.
+/*:>
+ For example, array A such that:
+ 
+    A[0] = 4
+    A[1] = 1
+    A[2] = 3
+    A[3] = 2
+ 
+ is a permutation, but array A such that:
+ 
+    A[0] = 4
+    A[1] = 1
+    A[2] = 3
+ 
+ is not a permutation, because value 2 is missing.
+ 
+ The goal is to check whether array A is a permutation.
+ 
+ Write a function:
+
+ public func solution(_ A : inout [Int]) -> Int
+ 
+ that, given an array A, returns 1 if array A is a permutation and 0 if it is not.
+ 
+ For example, given array A such that:
+ 
+    A[0] = 4
+    A[1] = 1
+    A[2] = 3
+    A[3] = 2
+ 
+ the function should return 1.
+
+ Given array A such that:
+ 
+    A[0] = 4
+    A[1] = 1
+    A[2] = 3
+ 
+ the function should return 0.
+
+ Write an efficient algorithm for the following assumptions:
+ 
+ N is an integer within the range [1..100,000];
+ 
+ each element of array A is an integer within the range [1..1,000,000,000].
+ */
+//: 🌱solutionE (75%)
+// O(N ** 2) for 문 안에 어레이 필터있음 -> 지양~
+public func solutionE(_ A : inout [Int]) -> Int{
+    
+    for i in 0..<A.count{
+        if A.filter({$0 == i+1}).count == 0{
+            return 0
+        }
+    }
+    return 1
+}
+//: 🌱solutionF (100%)
+//O(N) or O(N * log(N)) 또 Set
+public func solutionF(_ A : inout [Int]) -> Int{
+    var tempArr:Set<Int> = Set(1...A.count)
+    
+    for i in 0..<A.count{
+        tempArr.remove(A[i])
+    }
+    return tempArr.count == 0 ? 1 : 0
+}
+
+//var eArray = [4,1,3,2]
+var eArray = [4,1,3]
+print(solutionF(&eArray))
