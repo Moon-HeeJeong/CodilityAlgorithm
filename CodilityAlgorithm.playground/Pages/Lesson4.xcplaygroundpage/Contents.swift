@@ -218,3 +218,135 @@ public func solutionF(_ A : inout [Int]) -> Int{
 //var eArray = [4,1,3,2]
 var eArray = [4,1,3]
 print(solutionF(&eArray))
+
+//:> ## MaxCounters ##
+//:>
+/*:> You are given N counters, initially set to 0, and you have two possible operations on them:
+ 
+ increase(X) − counter X is increased by 1,
+ 
+ max counter − all counters are set to the maximum value of any counter.
+ 
+ A non-empty array A of M integers is given. This array represents consecutive operations:
+
+ if A[K] = X, such that 1 ≤ X ≤ N, then operation K is increase(X),
+ 
+ if A[K] = N + 1 then operation K is max counter.
+ 
+ For example, given integer N = 5 and array A such that:
+
+     A[0] = 3
+     A[1] = 4
+     A[2] = 4
+     A[3] = 6
+     A[4] = 1
+     A[5] = 4
+     A[6] = 4
+ 
+ the values of the counters after each consecutive operation will be:
+
+     (0, 0, 1, 0, 0)
+     (0, 0, 1, 1, 0)
+     (0, 0, 1, 2, 0)
+     (2, 2, 2, 2, 2)
+     (3, 2, 2, 2, 2)
+     (3, 2, 2, 3, 2)
+     (3, 2, 2, 4, 2)
+ 
+ The goal is to calculate the value of every counter after all operations.
+
+ Write a function:
+
+ public func solution(_ N : Int, _ A : inout [Int]) -> [Int]
+ 
+ that, given an integer N and a non-empty array A consisting of M integers, returns a sequence of integers representing the values of the counters.
+
+ Result array should be returned as an array of integers.
+
+ For example, given:
+
+     A[0] = 3
+     A[1] = 4
+     A[2] = 4
+     A[3] = 6
+     A[4] = 1
+     A[5] = 4
+     A[6] = 4
+ 
+ the function should return [3, 2, 2, 4, 2], as explained above.
+
+ Write an efficient algorithm for the following assumptions:
+
+ N and M are integers within the range [1..100,000];
+ 
+ each element of array A is an integer within the range [1..N + 1].
+ */
+/**
+ 문제 이해가 오래 걸림
+ 처음에 N만큼 0을 갖는 temp 배열 하나 만들고
+ A[i] 가 N 보다 작으면 temp[A[i]] 에 +1
+ A[i] 가 N 보다 크면 현재 까지의 최대 값을 temp 어레이 전체에 셋팅 해줌
+ **/
+
+//: 🌱solutionG (88%)
+//O(N + M)
+//for 문 안에서 array repeating 을 해줘서 .... 타임아웃!
+public func solutionG(_ N : Int, _ A : inout [Int]) -> [Int]{
+
+    var tempArr = Array<Int>(repeating: 0, count: N)
+    var currentMaxCount = 0
+    
+    for i in 0..<A.count{
+        let value = A[i]
+        
+        if value <= N{
+            tempArr[value-1] += 1
+            currentMaxCount = max(tempArr[value-1], currentMaxCount)
+            print("+1 count \(tempArr)")
+        }else{
+            tempArr = Array<Int>(repeating: currentMaxCount, count: N)
+            print("set max count \(tempArr)")
+        }
+    }
+    return tempArr
+}
+
+//var maxCountersArr = [3,4,4,6,1,4,4]
+//var maxCountersArr = [6,7,5,2,5,4,2]
+//print(solutionG(5, &maxCountersArr))
+
+//: 🌱solutionH (100%)
+//O(N + M)
+//맥스값 셋팅을 제일 마지막에 for문 돌려서 해줌
+public func solutionH(_ N : Int, _ A : inout [Int]) -> [Int]{
+
+    var tempArr = Array<Int>(repeating: 0, count: N)
+    var currentMaxCount = 0
+    var applyMaxCount = 0
+    
+    for i in 0..<A.count{
+        let value = A[i]
+        
+        if value <= N{
+            if tempArr[value-1] > applyMaxCount {
+                tempArr[value-1] += 1
+            }else {
+                tempArr[value-1] = applyMaxCount + 1
+            }
+            currentMaxCount = max(tempArr[value-1], currentMaxCount)
+        }else{
+            applyMaxCount = currentMaxCount
+        }
+    }
+    
+    for i in 0..<tempArr.count{
+        if tempArr[i] < applyMaxCount{
+            tempArr[i] = applyMaxCount
+        }
+    }
+    return tempArr
+}
+
+var maxCountersArr = [3,4,4,6,1,4,4]
+//var maxCountersArr = [6,7,5,2,5,4,2]
+print(solutionH(5, &maxCountersArr))
