@@ -389,3 +389,6 @@ public func solutionI(_ A : inout [Int]) -> Int{
 }
 var iArray =  [1, 3, 6, 4, 1, 2]//[-1,-3]
 print(solutionI(&iArray))
+
+//array를 순서대로 sort하고 중간에 +1를 넘어서 차이 나는 값이 있으면 거기가 빈값이기 떄문에 그걸 바로 리턴 해주는 방식도 좋아보인다!
+
